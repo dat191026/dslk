@@ -1,31 +1,142 @@
-﻿
-Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.11.35303.130
-MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Project1", "Project1\Project1.vcxproj", "{7327A931-7AA7-4AB3-9255-8EA850AC1CFC}"
-EndProject
-Global
-	GlobalSection(SolutionConfigurationPlatforms) = preSolution
-		Debug|x64 = Debug|x64
-		Debug|x86 = Debug|x86
-		Release|x64 = Release|x64
-		Release|x86 = Release|x86
-	EndGlobalSection
-	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{7327A931-7AA7-4AB3-9255-8EA850AC1CFC}.Debug|x64.ActiveCfg = Debug|x64
-		{7327A931-7AA7-4AB3-9255-8EA850AC1CFC}.Debug|x64.Build.0 = Debug|x64
-		{7327A931-7AA7-4AB3-9255-8EA850AC1CFC}.Debug|x86.ActiveCfg = Debug|Win32
-		{7327A931-7AA7-4AB3-9255-8EA850AC1CFC}.Debug|x86.Build.0 = Debug|Win32
-		{7327A931-7AA7-4AB3-9255-8EA850AC1CFC}.Release|x64.ActiveCfg = Release|x64
-		{7327A931-7AA7-4AB3-9255-8EA850AC1CFC}.Release|x64.Build.0 = Release|x64
-		{7327A931-7AA7-4AB3-9255-8EA850AC1CFC}.Release|x86.ActiveCfg = Release|Win32
-		{7327A931-7AA7-4AB3-9255-8EA850AC1CFC}.Release|x86.Build.0 = Release|Win32
-	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {1ECAB7B9-C9FB-49DE-8A15-70ECEFF898D2}
-	EndGlobalSection
-EndGlobal
+#include <iostream>
+using namespace std;
+
+// Cấu trúc Node
+struct Node {
+    int data; // Giá trị dữ liệu
+    Node* next; // Con trỏ tới Node tiếp theo
+};
+
+// Cấu trúc danh sách liên kết
+struct ListInt {
+    Node* head; // Con trỏ đầu danh sách
+};
+
+// Khởi tạo danh sách
+void initializeList(ListInt& list) {
+    list.head = nullptr;
+}
+
+// Hủy danh sách
+void destroyList(ListInt& list) {
+    Node* current = list.head;
+    while (current != nullptr) {
+        Node* temp = current;
+        current = current->next;
+        delete temp;
+    }
+    list.head = nullptr;
+}
+
+// Thêm phần tử vào danh sách
+void addElement(ListInt& list, int value) {
+    Node* newNode = new Node;
+    newNode->data = value;
+    newNode->next = nullptr;
+
+    if (list.head == nullptr) {
+        list.head = newNode;
+    }
+    else {
+        Node* current = list.head;
+        while (current->next != nullptr) {
+            current = current->next;
+        }
+        current->next = newNode;
+    }
+}
+
+// Xóa phần tử khỏi danh sách
+void removeElement(ListInt& list, int value) {
+    Node* current = list.head;
+    Node* previous = nullptr;
+
+    while (current != nullptr) {
+        if (current->data == value) {
+            if (previous == nullptr) {
+                list.head = current->next;
+            }
+            else {
+                previous->next = current->next;
+            }
+            delete current;
+            return;
+        }
+        previous = current;
+        current = current->next;
+    }
+}
+
+// Thêm danh sách thứ hai vào danh sách thứ nhất
+void addList(ListInt& list1, ListInt& list2) {
+    if (list1.head == nullptr) {
+        list1.head = list2.head;
+    }
+    else {
+        Node* current = list1.head;
+        while (current->next != nullptr) {
+            current = current->next;
+        }
+        current->next = list2.head;
+    }
+    list2.head = nullptr; // Làm rỗng danh sách thứ hai
+}
+
+// In danh sách
+void printList(ListInt& list) {
+    Node* current = list.head;
+    while (current != nullptr) {
+        cout << current->data << " ";
+        current = current->next;
+    }
+    cout << endl;
+}
+
+// Chương trình chính
+int main() {
+    ListInt list1, list2;
+    initializeList(list1);
+    initializeList(list2);
+
+    // Nhập 10 số nguyên vào danh sách
+    cout << "Nhap 10 so nguyen: ";
+    for (int i = 0; i < 10; i++) {
+        int value;
+        cin >> value;
+        addElement(list1, value);
+    }
+
+    // In danh sách
+    cout << "Danh sach sau khi nhap: ";
+    printList(list1);
+
+    // Nhập số k và xóa số k
+    cout << "Nhap so can xoa: ";
+    int k;
+    cin >> k;
+    removeElement(list1, k);
+
+    cout << "Danh sach sau khi xoa: ";
+    printList(list1);
+
+    // Nhập 5 số nguyên vào danh sách thứ hai
+    cout << "Nhap 5 so nguyen cho danh sach thu hai: ";
+    for (int i = 0; i < 5; i++) {
+        int value;
+        cin >> value;
+        addElement(list2, value);
+    }
+
+    // Thêm danh sách thứ hai vào danh sách thứ nhất
+    addList(list1, list2);
+
+    // In danh sách thứ nhất sau khi gộp
+    cout << "Danh sach sau khi gop: ";
+    printList(list1);
+
+    // Hủy danh sách
+    destroyList(list1);
+    destroyList(list2);
+
+    return 0;
+}
