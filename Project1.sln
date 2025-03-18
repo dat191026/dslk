@@ -8,135 +8,135 @@ struct Node {
 };
 
 // Cấu trúc danh sách liên kết
-struct ListInt {
+struct DanhSachLienKet {
     Node* head; // Con trỏ đầu danh sách
 };
 
-// Khởi tạo danh sách
-void initializeList(ListInt& list) {
-    list.head = nullptr;
+// Khoi tao danh sach
+void khoiTaoDanhSach(DanhSachLienKet& danhSach) {
+    danhSach.head = NULL; // Thay thế nullptr bằng NULL
 }
 
-// Hủy danh sách
-void destroyList(ListInt& list) {
-    Node* current = list.head;
-    while (current != nullptr) {
-        Node* temp = current;
-        current = current->next;
-        delete temp;
+// Huy danh sach
+void huyDanhSach(DanhSachLienKet& danhSach) {
+    Node* hienTai = danhSach.head;
+    while (hienTai != NULL) { // Thay thế nullptr bằng NULL
+        Node* tam = hienTai;
+        hienTai = hienTai->next;
+        delete tam;
     }
-    list.head = nullptr;
+    danhSach.head = NULL; // Thay thế nullptr bằng NULL
 }
 
-// Thêm phần tử vào danh sách
-void addElement(ListInt& list, int value) {
-    Node* newNode = new Node;
-    newNode->data = value;
-    newNode->next = nullptr;
+// Them phan tu vao danh sach
+void themPhanTu(DanhSachLienKet& danhSach, int giaTri) {
+    Node* nutMoi = new Node;
+    nutMoi->data = giaTri;
+    nutMoi->next = NULL; // Thay thế nullptr bằng NULL
 
-    if (list.head == nullptr) {
-        list.head = newNode;
+    if (danhSach.head == NULL) { // Thay thế nullptr bằng NULL
+        danhSach.head = nutMoi;
     }
     else {
-        Node* current = list.head;
-        while (current->next != nullptr) {
-            current = current->next;
+        Node* hienTai = danhSach.head;
+        while (hienTai->next != NULL) { // Thay thế nullptr bằng NULL
+            hienTai = hienTai->next;
         }
-        current->next = newNode;
+        hienTai->next = nutMoi;
     }
 }
 
-// Xóa phần tử khỏi danh sách
-void removeElement(ListInt& list, int value) {
-    Node* current = list.head;
-    Node* previous = nullptr;
+// Xoa phan tu khoi danh sach
+void xoaPhanTu(DanhSachLienKet& danhSach, int giaTri) {
+    Node* hienTai = danhSach.head;
+    Node* truocDo = NULL; // Thay thế nullptr bằng NULL
 
-    while (current != nullptr) {
-        if (current->data == value) {
-            if (previous == nullptr) {
-                list.head = current->next;
+    while (hienTai != NULL) { // Thay thế nullptr bằng NULL
+        if (hienTai->data == giaTri) {
+            if (truocDo == NULL) { // Thay thế nullptr bằng NULL
+                danhSach.head = hienTai->next;
             }
             else {
-                previous->next = current->next;
+                truocDo->next = hienTai->next;
             }
-            delete current;
+            delete hienTai;
             return;
         }
-        previous = current;
-        current = current->next;
+        truocDo = hienTai;
+        hienTai = hienTai->next;
     }
 }
 
-// Thêm danh sách thứ hai vào danh sách thứ nhất
-void addList(ListInt& list1, ListInt& list2) {
-    if (list1.head == nullptr) {
-        list1.head = list2.head;
+// Them danh sach thu hai vao danh sach thu nhat
+void themDanhSach(DanhSachLienKet& danhSach1, DanhSachLienKet& danhSach2) {
+    if (danhSach1.head == NULL) { // Thay thế nullptr bằng NULL
+        danhSach1.head = danhSach2.head;
     }
     else {
-        Node* current = list1.head;
-        while (current->next != nullptr) {
-            current = current->next;
+        Node* hienTai = danhSach1.head;
+        while (hienTai->next != NULL) { // Thay thế nullptr bằng NULL
+            hienTai = hienTai->next;
         }
-        current->next = list2.head;
+        hienTai->next = danhSach2.head;
     }
-    list2.head = nullptr; // Làm rỗng danh sách thứ hai
+    danhSach2.head = NULL; // Làm rỗng danh sách thứ hai
 }
 
-// In danh sách
-void printList(ListInt& list) {
-    Node* current = list.head;
-    while (current != nullptr) {
-        cout << current->data << " ";
-        current = current->next;
+// In danh sach
+void inDanhSach(DanhSachLienKet& danhSach) {
+    Node* hienTai = danhSach.head;
+    while (hienTai != NULL) { // Thay thế nullptr bằng NULL
+        cout << hienTai->data << " ";
+        hienTai = hienTai->next;
     }
     cout << endl;
 }
 
-// Chương trình chính
+// Chuong trinh chinh
 int main() {
-    ListInt list1, list2;
-    initializeList(list1);
-    initializeList(list2);
+    DanhSachLienKet danhSach1, danhSach2;
+    khoiTaoDanhSach(danhSach1);
+    khoiTaoDanhSach(danhSach2);
 
     // Nhập 10 số nguyên vào danh sách
     cout << "Nhap 10 so nguyen: ";
     for (int i = 0; i < 10; i++) {
-        int value;
-        cin >> value;
-        addElement(list1, value);
+        int giaTri;
+        cin >> giaTri;
+        themPhanTu(danhSach1, giaTri);
     }
 
     // In danh sách
     cout << "Danh sach sau khi nhap: ";
-    printList(list1);
+    inDanhSach(danhSach1);
 
     // Nhập số k và xóa số k
     cout << "Nhap so can xoa: ";
     int k;
     cin >> k;
-    removeElement(list1, k);
+    xoaPhanTu(danhSach1, k);
 
     cout << "Danh sach sau khi xoa: ";
-    printList(list1);
+    inDanhSach(danhSach1);
 
     // Nhập 5 số nguyên vào danh sách thứ hai
     cout << "Nhap 5 so nguyen cho danh sach thu hai: ";
     for (int i = 0; i < 5; i++) {
-        int value;
-        cin >> value;
-        addElement(list2, value);
+        int giaTri;
+        cin >> giaTri;
+        themPhanTu(danhSach2, giaTri);
     }
 
     // Thêm danh sách thứ hai vào danh sách thứ nhất
-    addList(list1, list2);
+    themDanhSach(danhSach1, danhSach2);
 
     // In danh sách thứ nhất sau khi gộp
     cout << "Danh sach sau khi gop: ";
-    printList(list1);
+    inDanhSach(danhSach1);
 
     // Hủy danh sách
-    destroyList(list1);
-    destroyList(list2);
+    huyDanhSach(danhSach1);
+    huyDanhSach(danhSach2);
 
     return 0;
 }
